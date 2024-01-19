@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js">
+    </script>
+    <style>
+      body {
+        font-family: 'Comic Sans MS', sans-serif; /* 아이들에게 친숙한 폰트로 변경 */
+        background-color: #FFEBCC; /* 밝은 배경색으로 변경 */
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;    
+        
+      }
+
+      .container {
+        max-width: 750px;
+        margin: auto;
+        padding: 20px;
+        width: 95%;
+        background-color: #FFF3E5; /* 조금 다른 밝은 배경색으로 변경 */
+        border-radius: 20px; /* 모서리 둥글게 */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+      }
+
+      .header {
+        text-align: left;
+        margin-bottom: 20px;
+      }
+
+      .user-input {
+        margin-bottom: 20px;
+      }
+
+      .chat-window {
+        background: #FFFFFF;         
+        border: 1px solid #ddd;
+        border-radius: 20px; /* 모서리 둥글게 */
+        padding: 20px;
+        height: 450px;
+        overflow-y: scroll;
+        margin-bottom: 20px;
+        white-space: pre-wrap; /* 공백과 줄바꿈 보존 */
+      }
+
+      .chat-window p {
+          font-size: 15px; /* 원하는 크기로 조절 */
+          margin-top: 5px;
+          margin-bottom: 0px;
+      }
+
+
+      .chat-input {
+        display: flex;
+      }
+
+      .chat-input textarea {
+        flex-grow: 1;
+        resize: none;
+        padding: 10px;
+        border-radius: 15px; /* 모서리 둥글게 */
+      }
+
+      h2 {
+        margin-top: 5px;
+        margin-bottom: 0px;
+        font: 'Comic Sans MS', sans-serif; /* 아이들에게 친숙한 폰트로 변경 */
+      }
+      
+      h3 {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+
+      .chat-input button {
+        background: #FF9999; /* 밝은 분홍색으로 변경 */
+        color: white;
+        border: none;
+        border-radius: 15px; /* 모서리 둥글게 */
+        padding: 10px;
+        margin-left: 10px; /* 좌측 공간 추가 */
+        cursor: pointer;
+      }
+
+      .chat-input button:hover {
+        background: #FF7777;
+      }
+
+      .chat-input button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .error {
+        color: red;
+        font-size: 14px;
+      }
+
+      /* 하단의 E-GPT 제작 정보도 약간 수정 */
+      p {
+        font-size: 12px;
+        color: #666;
+      }
+
+      img {
+        width : 50%;
+        height: auto; 
+      }
+      
+      .user-message {
+        border: 2px solid skyblue; /* 하늘색 테두리 */
+        border-radius: 10px;
+        padding: 3px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        background-color: white;
+        padding-left: 10px;
+      }
+
+      .assistant-message {
+        border: 2px solid lightpink; /* 밝은 연분홍색 테두리 */
+        border-radius: 10px;
+        padding: 3px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        background-color: white;
+        padding-left: 10px;
+      }
+
+      .system-message {   
+        margin-top: 1px;
+        margin-bottom: 1px;        
+        padding: 10px;
+        padding-left: 10px;
+        background-color: lightyellow;
+        border-radius: 10px;
+        font-weight: bold;
+      }
+
+      p .mjx-chtml {
+        font-size: 150%; /* 원래 크기의 150% */
+        display: inline-block; /* 수식을 인라인 블록 요소로 표시 */
+      }
+
+      .MathJax_Display {
+        text-align: left !important; /* MathJax 수식 컨테이너를 왼쪽 정렬 */
+      }
+
+      @media screen and (orientation: portrait) {
+        /* 휴대폰 세로모드 */
+        html, body {
+          font-size: 40px;
+          padding: 5px;
+          height: 100%;
+        }
+
+        .container {
+          width: 90%;          
+          height: 95%;
+          padding: 10px;
+        }
+
+        .chat-window {
+          height: 65%;
+          padding: 10px;
+          font-size: 40px;       
+        }
+
+        .chat-window p {
+          font-size: 40px; /* 원하는 크기로 조절 */
+          margin-top: 5px;
+          margin-bottom: 0px;
+        }
+
+        .chat-input textarea {
+          font-size: 40px;          
+        }
+
+        #input-username {
+          font-size: 40px; /* 폰트 크기를 더 크게 */
+          padding: 10px; /* 입력 필드 내부 패딩을 늘려서 더 크게 보이게 함 */
+          width: 30%;
+        }
+
+        .chat-input button {
+          padding: 8px;
+        }
+
+        .user-input {
+          font-size: 40px;
+        }   
+
+        h2, h3 {
+          font-size: 50px;
+        }
+
+
+      .error {
+        color: red;
+        font-size: 20px;
+      }
+
+      
+      img {
+        width : 80%;
+        height: auto; 
+      }  
+      
+      p {
+        font-size: 20px;        
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h2 id="title"></h2>
+      </div>
+      <div class="user-input">
+        <label for="input-username">이름:</label>
+        <input type="text" id="input-username" name="input-username">
+        <span id="username-error" class="error"></span>
+      </div>
+      <div id="chat-window" class="chat-window"></div>
+      <div class="chat-input">
+        <textarea id="input-text" placeholder="질문이나 대답 또는 '끝'을 입력하세요.."></textarea>
+        <button id="submit-button" disabled>▶</button>
+      </div>
+    </div>
+    <!--  <div id="conversation-history"></div><br> -->
+    <p>E-GPT 제작: 서울중광초등학교 교사 임세범 최종업데이트: 2023.12.09. hccgahy@outlook.com</p>
+
+    <script>
+      const chatWindow = document.getElementById("chat-window");
+
+      document.getElementById("username-error").textContent = "(필수)이름은 2글자 이상이어야 합니다.";
+
+      document.getElementById("input-text").addEventListener("keypress", function(e) {        
+        // Check if the key is the Enter key
+        if (e.key === "Enter") {
+          // Prevent the default action to stop the Enter key from creating a new line in the textarea
+          e.preventDefault();
+
+          // Click the submit button programmatically
+          document.getElementById("submit-button").click();
+        }
+
+        
+      });
+
+      function scrollToBottom(element, duration) {
+        var start = element.scrollTop;
+        var end = element.scrollHeight;
+        var change = end - start;
+        var startTime = performance.now();
+        var easeInOutQuad = function(time, start, change, duration) {
+          time /= duration / 2;
+          if (time < 1) return change / 2 * time * time + start;
+          time--;
+          return -change / 2 * (time * (time - 2) - 1) + start;
+        };
+        var animateScroll = function(timestamp) {
+          var runtime = timestamp - startTime;
+          element.scrollTop = easeInOutQuad(runtime, start, change, duration);
+          if (runtime < duration) requestAnimationFrame(animateScroll);
+        };
+        requestAnimationFrame(animateScroll);
+      }
+
+      function appendAndScroll(parentElement, role, text) {
+        const lines = text.split('<br/>');
+        let mathRenderingPromises = [];
+        const messageDiv = document.createElement("div");
+        
+        // role에 따라 적절한 클래스 적용
+        if (role === "user") {
+          messageDiv.classList.add("user-message");
+        } else if (role === "assistant") {
+          messageDiv.classList.add("assistant-message");
+        } else {
+          messageDiv.classList.add("system-message");
+        }
+
+
+        lines.forEach(line => {
+          const p = document.createElement("p");
+          p.innerHTML = line;
+          messageDiv.appendChild(p); // p 태그를 div 내부에 추가
+
+          // LaTeX 코드가 있는지 확인
+          if (line.includes("\\(") || line.includes("\\[") || line.includes("$$")) {
+            p.style.visibility = "hidden"; // 처음에는 텍스트를 숨깁니다.
+
+            // MathJax로 렌더링하고 완료되면 표시
+            let promise = MathJax.typesetPromise([p]).then(() => {
+              p.style.visibility = "visible"; // MathJax 렌더링이 완료되면 텍스트를 보이게 합니다.
+            });
+
+            mathRenderingPromises.push(promise);
+          }
+        });
+
+        parentElement.appendChild(messageDiv); // div를 부모 요소에 추가
+
+        // 모든 수학식 렌더링이 완료된 후에 스크롤
+        Promise.all(mathRenderingPromises).then(() => {
+          scrollToBottom(parentElement, 500);
+        });
+      }
+
+      google.script.run.withSuccessHandler((data) => {
+        document.getElementById("title").textContent = data.title;        
+        const systemValue = data.systemValue;
+        const defaultUserRequest = data.defaultUserRequest;
+        const welcomeMessage = data.welcomeMessage;
+
+        appendAndScroll(chatWindow, "system", welcomeMessage);        
+
+        let conversationHistory = [
+          { role: "system", content: systemValue }
+        ];
+
+        let firstMessageSent = false; // 사용자가 첫 메시지를 보냈는지 확인하는 변수
+
+        document.getElementById("submit-button").addEventListener("click", (e) => {
+          const usernameInput = document.getElementById("input-username");
+          const username = usernameInput.value;
+
+          if (username.trim().length < 2) {
+            document.getElementById("username-error").textContent = "(필수)이름은 2글자 이상이어야 합니다.";
+            return;
+          }
+
+          document.getElementById("username-error").textContent = "";
+          document.getElementById("submit-button").disabled = true;
+          let inputText = document.getElementById("input-text").value;
+          
+          if (!firstMessageSent) { // 시작 시 이름 얼리기
+            // const currentDate = new Date();
+            // const currentDateString = currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate();
+            // const currentTimeString = currentDate.getHours() + ":" + currentDate.getMinutes();
+            inputText = inputText +"<!--" + " my name is" + username + ". " + defaultUserRequest + "-->"; 
+            firstMessageSent = true; // 첫 메시지 보냄으로 표시
+            usernameInput.disabled = true; // 이름 입력란 비활성화
+          }
+
+          document.getElementById("input-text").value = "";
+          appendAndScroll(chatWindow, "user", `${username}: ${inputText}`);
+          conversationHistory.push({ role: "user", content: inputText });
+          
+
+          google.script.run.withSuccessHandler((response) => {
+            appendAndScroll(chatWindow, "assistant", 'AI 선생님: ' + response.replace(/\n/g, '<br/>'));
+            conversationHistory.push({ role: "assistant", content: response });
+            document.getElementById("submit-button").disabled = false;
+            document.getElementById("input-text").placeholder = "질문이나 대답 또는 '끝'을 입력하세요..";
+          }).processGPT(username, inputText, JSON.stringify(conversationHistory));
+
+          document.getElementById("input-text").placeholder = "(AI 선생님이 생각하고 있습니다...)";
+          
+        });
+      }).getSheetValues();
+      
+      // 'input-username' input 필드에 이벤트 리스너 추가
+      document.getElementById("input-username").addEventListener('input', function() {
+        const username = document.getElementById("input-username").value;
+        if (username.length < 2) {
+          document.getElementById("username-error").textContent = "(필수)이름은 2글자 이상이어야 합니다.";
+          document.getElementById("submit-button").disabled = true;
+        } else {
+          document.getElementById("username-error").textContent = "";
+          document.getElementById("submit-button").disabled = false;
+        }
+      });
+
+    </script>
+  </body>
+</html>
